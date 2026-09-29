@@ -6,12 +6,12 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT;
 
 // Allow our React frontend to call this server
 app.use(
   cors({
-   origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
+   origin: ["https://preeminent-stroopwafel-4f9f02.netlify.app/","http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
   })
 );
 
