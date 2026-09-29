@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "./supabaseClient";
 
-export default function Auth() {
+export default function Auth({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +12,7 @@ export default function Auth() {
     setMessage("");
 
     if (isLogin) {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -21,6 +21,7 @@ export default function Auth() {
         setMessage(error.message);
       } else {
         setMessage("Login successful!");
+        onLogin(data.user);
       }
     } else {
       const { error } = await supabase.auth.signUp({
