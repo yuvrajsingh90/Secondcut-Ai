@@ -2,7 +2,7 @@ import { useState , useEffect } from "react";
 import Auth from "./Auth";
 import {supabase} from "./supabaseClient";
 import Dashboard from './Dashboard';
-import Login from './Login';
+
 
 function BackgroundRemover() {
   const [file, setFile] = useState(null);
