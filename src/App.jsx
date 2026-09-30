@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import Auth from "./Auth";
 import {supabase} from "./supabaseClient";
 
@@ -99,12 +99,44 @@ function BackgroundRemover() {
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  if (!loggedIn) {
-    return <Auth onLogin={() => setLoggedIn(true)} />;
+  useEffect(() => {
+    // 1. मौजूदा सेशन की जांच करें
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+      setLoading(false);
+    };
+
+    checkSession();
+
+    // 2. ऑथेंटिकेशन स्टेट में बदलाव (लॉगिन/लॉगआउट) को रियल-टाइम में सुनें
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // सेशन चेक होने तक लोडिंग दिखाएगा
   }
 
-  return <BackgroundRemover />;
+  return (
+    <div>
+      {loggedIn ? <Dashboard /> : <Login />}
+    </div>
+  );
 }
 
 export default App;
