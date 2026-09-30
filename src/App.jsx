@@ -1,6 +1,8 @@
 import { useState , useEffect } from "react";
 import Auth from "./Auth";
 import {supabase} from "./supabaseClient";
+import Dashboard from './Dashboard'; // <--- यह लाइन जोड़ें
+import Login from './Login'; // (अगर Login अलग फाइल में है)
 
 function BackgroundRemover() {
   const [file, setFile] = useState(null);
