@@ -1,7 +1,7 @@
 import { useState , useEffect } from "react";
 import Auth from "./Auth";
 import {supabase} from "./supabaseClient";
-import Dashboard from './Dashboard';
+
 
 
 function BackgroundRemover() {
@@ -134,9 +134,13 @@ function App() {
     return <div>Loading...</div>; // सेशन चेक होने तक लोडिंग दिखाएगा
   }
 
-  return (
-    <div>
-      {loggedIn ? <Dashboard /> : <Login />}
+return (
+    <div className="app-container">
+      {loggedIn ? (
+        <BackgroundRemover />
+      ) : (
+        <Auth onLogin={() => setLoggedIn(true)} />
+      )}
     </div>
   );
 }
